@@ -1,6 +1,7 @@
 package cmh.api.polymorphicdemo;
 
 public class Dog extends Animal{
+    public String name = "×ÓÀà¹·";
 
     @Override
     public void run() {
