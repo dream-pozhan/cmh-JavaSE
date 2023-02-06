@@ -1,4 +1,4 @@
-package cmh.api.arraylist;
+package cmh.api.arraylistdemo;
 
 import java.util.ArrayList;
 import java.util.Scanner;

@@ -1,4 +1,4 @@
-package cmh.api.arraylist;
+package cmh.api.arraylistdemo;
 
 public class Movie {
     private String name;

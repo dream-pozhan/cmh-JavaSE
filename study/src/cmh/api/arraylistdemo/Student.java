@@ -1,4 +1,4 @@
-package cmh.api.arraylist;
+package cmh.api.arraylistdemo;
 
 public class Student {
     private  String studyNumber;
