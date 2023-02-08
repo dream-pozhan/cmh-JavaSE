@@ -16,7 +16,7 @@ public class Mouse implements USB {
     }
 
     @Override
-    public void unconnect() {
+    public void disconnect() {
         System.out.println(name+"成功从电脑中拔出来~~");
     }
     /*

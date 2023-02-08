@@ -16,7 +16,7 @@ public class Computer {
     public void InstallUSB(USB usb){
         //多态 USB可能是鼠标，也可能是键盘
         usb.connect();
-        usb.unconnect();
+        usb.disconnect();
         if (usb instanceof KeyBoard){
             KeyBoard keyBoard = (KeyBoard) usb;
             keyBoard.KeyDown();
