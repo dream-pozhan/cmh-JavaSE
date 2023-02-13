@@ -7,7 +7,7 @@ import java.util.Set;
 public class SetDemo {
     public static void main(String[] args) {
         Set<String> set = new HashSet();//hashset,无序，不重复，不能索引
-        //Set<String> set = new LinkedHashSet<String>();//linkedhashset有序，不重复，不能索引（没有提供支持索引的API，底层有索引）
+        //Set<String> set = new LinkedHashSet<String>();//linkedhashset有序，不重复，不能索引（）
         set.add("Java");
         set.add("Java");
         set.add("HTML");
