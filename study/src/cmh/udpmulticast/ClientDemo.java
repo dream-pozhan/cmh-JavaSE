@@ -1,4 +1,4 @@
-package cmh.udp2;
+package cmh.udpmulticast;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -10,7 +10,6 @@ public class ClientDemo {
         System.out.println("+++客户端启动后+++");
         //创建发送对象
         DatagramSocket socket = new DatagramSocket();
-        //
         Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println("请说：");
@@ -21,7 +20,7 @@ public class ClientDemo {
                 break;
             }
             byte[] buffer = msg.getBytes();
-            DatagramPacket packet = new DatagramPacket(buffer, buffer.length, InetAddress.getLocalHost(),8888);
+            DatagramPacket packet = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("224.0.1.1"),9999);
             //发送数据出去
             socket.send(packet);
         }

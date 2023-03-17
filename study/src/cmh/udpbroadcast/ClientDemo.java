@@ -1,4 +1,4 @@
-package cmh.udp2;
+package cmh.udpbroadcast;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -21,7 +21,7 @@ public class ClientDemo {
                 break;
             }
             byte[] buffer = msg.getBytes();
-            DatagramPacket packet = new DatagramPacket(buffer, buffer.length, InetAddress.getLocalHost(),8888);
+            DatagramPacket packet = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("255.255.255.255"),9999);
             //发送数据出去
             socket.send(packet);
         }
