@@ -1,14 +1,13 @@
-package cmh.tcpthread;
+package cmh.tcpthreadpool;
 
 import java.io.BufferedReader;
-
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
-public class ServerThreadDemo extends Thread{
+public class ServerReaderRunnable implements Runnable{
     private Socket socket;
-    public ServerThreadDemo(Socket socket){
+    public ServerReaderRunnable(Socket socket){
         this.socket = socket;
     }
     @Override
@@ -23,7 +22,7 @@ public class ServerThreadDemo extends Thread{
                 System.out.println(socket.getRemoteSocketAddress()+"说了："+msg);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(socket.getRemoteSocketAddress()+"它走了，下线了");
         }
     }
 }

@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/cmh-JavaSE.iml" filepath="$PROJECT_DIR$/.idea/cmh-JavaSE.iml" />
       <module fileurl="file://$PROJECT_DIR$/collectionMap/collectionMap.iml" filepath="$PROJECT_DIR$/collectionMap/collectionMap.iml" />
+      <module fileurl="file://$PROJECT_DIR$/junit_reflect_annotation_proxy_app/junit_reflect_annotation_proxy_app.iml" filepath="$PROJECT_DIR$/junit_reflect_annotation_proxy_app/junit_reflect_annotation_proxy_app.iml" />
       <module fileurl="file://$PROJECT_DIR$/map/map.iml" filepath="$PROJECT_DIR$/map/map.iml" />
       <module fileurl="file://$PROJECT_DIR$/study/study.iml" filepath="$PROJECT_DIR$/study/study.iml" />
     </modules>
