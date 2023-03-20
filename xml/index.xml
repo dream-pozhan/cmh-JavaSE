@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 根标签，有且只能有一个-->
+<People>
+    <name>张三</name>
+    <gender>男</gender>
+    <age>30</age>
+    <info>
+        <address>云南</address>
+        <hobby>学习</hobby>
+    </info>
+    <sql>
+        select * from user where age &lt; 18;
+        select * from user where age &gt; 10 &amp;&amp;&lt; 18;
+    </sql>
+</People>

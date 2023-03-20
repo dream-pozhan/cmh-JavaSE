@@ -1,0 +1,11 @@
+
+===============Student===============
+name=孙悟空 
+gender=男 
+age=500 
+schoolName=菩提老祖 
+hobby=吃桃子 
+===============Teacher===============
+name=张三 
+gender=男 
+salary=6000.0 

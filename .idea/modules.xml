@@ -7,6 +7,7 @@
       <module fileurl="file://$PROJECT_DIR$/junit_reflect_annotation_proxy_app/junit_reflect_annotation_proxy_app.iml" filepath="$PROJECT_DIR$/junit_reflect_annotation_proxy_app/junit_reflect_annotation_proxy_app.iml" />
       <module fileurl="file://$PROJECT_DIR$/map/map.iml" filepath="$PROJECT_DIR$/map/map.iml" />
       <module fileurl="file://$PROJECT_DIR$/study/study.iml" filepath="$PROJECT_DIR$/study/study.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xml/xml.iml" filepath="$PROJECT_DIR$/xml/xml.iml" />
     </modules>
   </component>
 </project>
