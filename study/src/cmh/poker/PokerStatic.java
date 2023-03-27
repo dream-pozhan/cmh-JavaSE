@@ -1,5 +1,8 @@
 package cmh.poker;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 class Card{
     String point;
@@ -8,6 +11,9 @@ class Card{
     @Override
     public String toString() {
         return  point+color;
+    }
+    public String writeAsLine(){
+        return point+" "+color+"\n";
     }
 }
 public class PokerStatic {
@@ -39,8 +45,12 @@ public class PokerStatic {
 
 
 
-    public static void main(String[] args) {
-        System.out.println(cards);
+    public static void main(String[] args) throws Exception {
+        OutputStream outputStream = new FileOutputStream("study/src/poker.txt");
+        for (Card card : cards) {
+            outputStream.write(card.writeAsLine().getBytes());
+        }
+
     }
 }
 

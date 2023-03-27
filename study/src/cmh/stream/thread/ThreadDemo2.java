@@ -1,4 +1,4 @@
-package cmh.thread;
+package cmh.stream.thread;
 
 public class ThreadDemo2 {
     public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package cmh.thread;
+package cmh.stream.thread;
 //主线程和子线程同时在跑
 public class ThreadDemo {
     public static void main(String[] args) {
