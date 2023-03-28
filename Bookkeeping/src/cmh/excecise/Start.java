@@ -1,5 +1,7 @@
 package cmh.excecise;
 
+import org.junit.Test;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -19,68 +21,54 @@ public class Start {
             System.out.println("请选择登录或者注册：1：登录 2：注册");
             int choice = scanner.nextInt();
             if (choice == 1){
-                if (accountList.size() != 0){
-                    System.out.println("请输入账户号码:");
-                    String userNumber = scanner.next();
-                    System.out.println("请输入账户密码:");
-                    String password = scanner.next();
-                    login(userNumber,password);
-                }else {
-                    System.out.println("无账户信息，请先注册！");
-                    System.out.println("请输入注册的账户号码:");
-                    String registerNumber = scanner.next();
-                    System.out.println("请输入注册的账户密码:");
-                    String registerPassword = scanner.next();
-                    register(registerNumber,registerPassword);
-                    break;
-                }
+                login(accountList);
 
             } else if (choice == 2) {
-                System.out.println("请输入注册的账户号码:");
-                String registerNumber = scanner.next();
-                System.out.println("请输入注册的账户密码:");
-                String registerPassword = scanner.next();
-                register(registerNumber,registerPassword);
-                break;
+                register(accountList);
             }else {
                 System.out.println("输入指令有误，请重新输入：1,登录 2，注册");
             }
         }
     }
-
-    public static void register(String registerNumber, String registerPassword) throws Exception {
-        OutputStream outputStream = new FileOutputStream("Bookkeeping/src/userinfomation.txt");
+    @Test
+    public static void register(ArrayList<Account> accountList) throws Exception {
+        OutputStream outputStream = new FileOutputStream("Bookkeeping/src/userinfomation.txt",true);
+        System.out.println("请输入你的账户号码：");
+        String registerNumber = scanner.next();
+        System.out.println("请输入你的账户密码");
+        String registerPassword = scanner.next();
         account.setUserNumber(registerNumber);
         account.setPassword(registerPassword);
         accountList.add(account);
-        System.out.println("注册成功，你的信息如下：");
-        System.out.println("账户号码:"+account.getUserNumber()+"账户密码："+account.getPassword());
         outputStream.write(account.toString().getBytes());
         outputStream.flush();
         outputStream.close();
-        login(registerNumber,registerPassword);
-
+        System.out.println("注册成功!");
+        login(accountList);
     }
 
-    private static void login(String userNumber, String password)  {
-        while (true) {
-            System.out.println("请输入账户号码：");
-            String numberNow = scanner.next();
-            System.out.println("请输入账户密码：");
-            String passwordNow = scanner.next();
-            if (numberNow.equals(userNumber) && passwordNow.equals(password)){
-                System.out.println("登录成功");
-                System.out.println("用户账户："+account.getUserNumber());
-                operatePage();
-                break;
-            }else {
-                System.out.println("登录失败，请重新输入账户号码与密码！");
+    public static void login(ArrayList<Account> accountList)  {
+        if (accountList.size() == 0){
+            System.out.println("无账户信息，请先注册！");
+            return;//返回至开始页面，选择登录/注册
+        }else {
+            while (true) {
+                System.out.println("请输入账户号码：");
+                String numberNow = scanner.next();
+                System.out.println("请输入账户密码：");
+                String passwordNow = scanner.next();
+                if (numberNow.equals(account.getUserNumber()) && passwordNow.equals(account.getPassword())){
+                    System.out.println("登录成功");
+                    System.out.println("当前账户为："+account.getUserNumber());
+                    operatePage();
+                }else {
+                    System.out.println("账户名或密码错误，请重新输入！");
+                }
             }
         }
-
     }
 
-    private static void operatePage()  {
+    public static void operatePage()  {
         System.out.println("++++操作页面+++++");
         while (true) {
             System.out.println("请选择你的操作：0-记录每日支出与每日收入,1-统计月支出与月收入，2-备注");
@@ -103,13 +91,13 @@ public class Start {
 
     }
 
-    private static void Remark(Account account) {
+    public static void Remark(Account account) {
         ArrayList<String> remarkList = new ArrayList<>();
         System.out.println("当前账户是："+account.getUserNumber());
         String remark = scanner.next();
         remarkList.add(remark);
         try {
-            OutputStream outputStream = new FileOutputStream("Bookkeeping/src/remark.txt");
+            OutputStream outputStream = new FileOutputStream("Bookkeeping/src/remark.txt",true);
             outputStream.write(remarkList.toString().getBytes());
             outputStream.flush();
             outputStream.close();
@@ -119,7 +107,7 @@ public class Start {
 
     }
 
-    private static void addMonthIncomeAndExpense(Account account,ArrayList<Double> dailyIncome,ArrayList<Double> dailyExpense) {
+    public static void addMonthIncomeAndExpense(Account account,ArrayList<Double> dailyIncome,ArrayList<Double> dailyExpense) {
         System.out.println("当前的用户为："+account.getUserNumber());
         double monthSumIncome = 0;
         double monthSumExpense = 0;
@@ -136,15 +124,15 @@ public class Start {
 
     }
 
-    private static void signDailyIncomeAndExpense(Account account,ArrayList<Double> dailyIncome,ArrayList<Double> dailyExpense) {
+    public static void signDailyIncomeAndExpense(Account account,ArrayList<Double> dailyIncome,ArrayList<Double> dailyExpense) {
         double sumIncome = 0;
         double sumExpense = 0;
         double totalMoney = 0;
         HashMap<String,Double> hashMap1 = new HashMap<>();
         HashMap<String,Double> hashMap2 = new HashMap<>();
         try {
-            OutputStream outputStream = new FileOutputStream("Bookkeeping/src/incomelist.txt");
-            OutputStream outputStream2 = new FileOutputStream("Bookkeeping/src/expenselist.txt");
+            OutputStream outputStream = new FileOutputStream("Bookkeeping/src/incomelist.txt",true);
+            OutputStream outputStream2 = new FileOutputStream("Bookkeeping/src/expenselist.txt",true);
             while (true) {
                 System.out.println("当前的账户为："+account.getUserNumber());
                 System.out.println("请输入你想进行的操作   i--每日收入;e--每日支出;b--返回");
@@ -157,6 +145,7 @@ public class Start {
                             try {
                                 outputStream.write(hashMap1.toString().getBytes());
                                 outputStream.flush();
+                                outputStream.close();
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -176,6 +165,7 @@ public class Start {
                             try {
                                 outputStream2.write(hashMap2.toString().getBytes());
                                 outputStream2.flush();
+                                outputStream2.close();
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -206,7 +196,5 @@ public class Start {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
     }
-
 }

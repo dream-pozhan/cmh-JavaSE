@@ -91,6 +91,6 @@ public class Account {
     public String toString() {
         return
                 "userNumber='" + userNumber + '\'' +
-                ", password='" + password + '\'' ;
+                ", password='" + password + '\''+"\n" ;
     }
 }
