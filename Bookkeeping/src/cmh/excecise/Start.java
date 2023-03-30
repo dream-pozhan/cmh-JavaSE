@@ -8,9 +8,10 @@ import java.util.Scanner;
 public class Start {
     private static ArrayList<Double> dailyIncome = new ArrayList<>();
     private static ArrayList<Double> dailyExpense = new ArrayList<>();
-
+    static  Account account = new Account();
     private static Scanner scanner = new Scanner(System.in);
-    private static String userInformationPath = "Bookkeeping/src/userinfomation.txt";;
+    private static String userInformationPath = "Bookkeeping/src/userinfomation.txt";
+    private static String userDailyInformation = "Bookkeeping/src/dailyinformation.txt";
 
     public static void main(String[] args) throws Exception {
         while (true) {
@@ -59,7 +60,7 @@ public class Start {
         registerAccount.setPassword(registerPassword);
         writeUserInformation(registerAccount);
         System.out.println("注册成功!");
-//        login(accountList);
+        login();
     }
 
     public static String toRegisterInfo(String registerNumber, String password) {
@@ -67,7 +68,7 @@ public class Start {
                 ", password='" + password + '\'';
 
     }
-
+    //从存储的文本里读取信息
     public static Account fromLine(String line){
         String[] arr = line.split(",");
 
@@ -97,53 +98,55 @@ public class Start {
                     if("".equals(line)){
                         continue;
                     }
-                    Account parsedAccount = fromLine(line);
-                    if(numberNow.equals(parsedAccount.getUserNumber())){
-                        if(passwordNow.equals(parsedAccount.getPassword())){
+                    account = fromLine(line);
+                    if(numberNow.equals(account.getUserNumber())){
+                        if(passwordNow.equals(account.getPassword())){
                             System.out.println("登录成功");
                             System.out.println("当前账户为：" + numberNow);
-
+                            operatePage();
                             break;
-
                         }else {
-                            System.out.println("登录失败，请重新输入");
+                            System.out.println("登录失败，请重新输入账户密码");
                             System.out.println("当前账户为：" + numberNow);
                         }
-
+                    }else {
+                        System.out.println("登录失败!三秒后返回初始页面~~");
+                        Thread.sleep(3000);
+                        return;
                     }
-
-
                 }
-
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
-
         }
     }
-//
-//    public static void operatePage() {
-//        System.out.println("++++操作页面+++++");
-//        while (true) {
-//            System.out.println("请选择你的操作：0-记录每日支出与每日收入,1-统计月支出与月收入，2-备注");
-//            int command = scanner.nextInt();
-//            switch (command) {
-//                case 0:
-//                    signDailyIncomeAndExpense(account, dailyIncome, dailyExpense);
-//                    break;
-//                case 1:
-//                    addMonthIncomeAndExpense(account, dailyIncome, dailyExpense);
-//                    break;
-//                case 2:
-//                    Remark(account);
-//                    break;
-//                default:
-//                    System.out.println("输入的指令有误，请重新输入！");
-//
-//            }
-//        }
-//
-//    }
+
+    public static void operatePage() {
+        System.out.println("++++操作页面+++++");
+        while (true) {
+            System.out.println("请选择你的操作：0-记录每日支出与每日收入,1-统计月支出与月收入,2-备注,3-返回上一步");
+            int command = scanner.nextInt();
+            switch (command) {
+                case 0:
+                    signDailyIncomeAndExpense(account, dailyIncome, dailyExpense);
+                    break;
+                case 1:
+                    addMonthIncomeAndExpense(account, dailyIncome, dailyExpense);
+                    break;
+                case 2:
+                    Remark(account);
+                    break;
+                case 3:
+                    return;
+                default:
+                    System.out.println("输入的指令有误，请重新输入！");
+
+            }
+        }
+
+    }
 
     public static void Remark(Account account) {
         ArrayList<String> remarkList = new ArrayList<>();
@@ -182,11 +185,12 @@ public class Start {
         double sumIncome = 0;
         double sumExpense = 0;
         double totalMoney = 0;
-        HashMap<String, Double> hashMap1 = new HashMap<>();
-        HashMap<String, Double> hashMap2 = new HashMap<>();
+        HashMap<String, Double> hashMap1 = new MyHashMap<>();
+        HashMap<String, Double> hashMap2 = new MyHashMap<>();
+
         try {
-            OutputStream outputStream = new FileOutputStream("Bookkeeping/src/incomelist.txt", true);
-            OutputStream outputStream2 = new FileOutputStream("Bookkeeping/src/expenselist.txt", true);
+            OutputStream outputStream = new FileOutputStream(userDailyInformation, true);
+            OutputStream outputStream2 = new FileOutputStream(userDailyInformation, true);
             while (true) {
                 System.out.println("当前的账户为：" + account.getUserNumber());
                 System.out.println("请输入你想进行的操作   i--每日收入;e--每日支出;b--返回");
