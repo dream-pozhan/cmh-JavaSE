@@ -13,12 +13,16 @@ public class Start {
     private static String userInformationPath = "Bookkeeping/src/userinfomation.txt";
     private static String userDailyInformation = "Bookkeeping/src/dailyinformation.txt";
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args)  {
+       homePage();
+    }
+
+    public static void homePage(){
         while (true) {
             System.out.println("请选择登录或者注册：1：登录 2：注册");
             int choice = scanner.nextInt();
             if (choice == 1) {
-               login();
+                login();
             } else if (choice == 2) {
                 register();
             } else {
@@ -26,7 +30,6 @@ public class Start {
             }
         }
     }
-
     public static void writeUserInformation(Object information) {
         if(information==null){
             return;
@@ -109,16 +112,10 @@ public class Start {
                             System.out.println("登录失败，请重新输入账户密码");
                             System.out.println("当前账户为：" + numberNow);
                         }
-                    }else {
-                        System.out.println("登录失败!三秒后返回初始页面~~");
-                        Thread.sleep(3000);
-                        return;
                     }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
             }
         }
     }
@@ -126,7 +123,7 @@ public class Start {
     public static void operatePage() {
         System.out.println("++++操作页面+++++");
         while (true) {
-            System.out.println("请选择你的操作：0-记录每日支出与每日收入,1-统计月支出与月收入,2-备注,3-返回上一步");
+            System.out.println("请选择你的操作：0-记录每日支出与每日收入,1-统计月支出与月收入,2-备注,3-退出");
             int command = scanner.nextInt();
             switch (command) {
                 case 0:
@@ -139,7 +136,8 @@ public class Start {
                     Remark(account);
                     break;
                 case 3:
-                    return;
+                    homePage();
+                    break;
                 default:
                     System.out.println("输入的指令有误，请重新输入！");
 
