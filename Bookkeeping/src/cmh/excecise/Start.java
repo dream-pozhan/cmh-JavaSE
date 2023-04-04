@@ -1,23 +1,26 @@
 package cmh.excecise;
 
-import java.io.*;
+import cmh.excecise.model.Account;
+import cmh.excecise.model.Transaction;
+import cmh.excecise.storage.UserInformationStorage;
+import cmh.excecise.storage.UserTransactionStorage;
+
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 
 public class Start {
     private static ArrayList<Double> dailyIncome = new ArrayList<>();
     private static ArrayList<Double> dailyExpense = new ArrayList<>();
-    static  Account account = new Account();
     private static Scanner scanner = new Scanner(System.in);
-    private static String userInformationPath = "Bookkeeping/src/userinfomation.txt";
-    private static String userDailyInformation = "Bookkeeping/src/dailyinformation.txt";
+    private static Account currentAccount;
 
-    public static void main(String[] args)  {
-       homePage();
+    public static void main(String[] args) {
+        homePage();
     }
 
-    public static void homePage(){
+    public static void homePage() {
         while (true) {
             System.out.println("请选择登录或者注册：1：登录 2：注册");
             int choice = scanner.nextInt();
@@ -30,62 +33,18 @@ public class Start {
             }
         }
     }
-    public static void writeUserInformation(Object information) {
-        if(information==null){
-            return;
-        }
-        OutputStream outputStream = null;
-        try {
-            outputStream = new FileOutputStream(userInformationPath, true);
-            outputStream.write(information.toString().getBytes());
-            outputStream.flush();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } finally {
-            try {
-                if (outputStream != null) {
-                    outputStream.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
 
-    }
 
-    public static void register(){
+    public static void register() {
         System.out.println("请输入你的账户号码：");
         String registerNumber = scanner.next();
         System.out.println("请输入你的账户密码");
         String registerPassword = scanner.next();
-        Account registerAccount = new Account();
-        registerAccount.setUserNumber(registerNumber);
-        registerAccount.setPassword(registerPassword);
-        writeUserInformation(registerAccount);
+        UserInformationStorage.addAccount(registerNumber, registerPassword);
         System.out.println("注册成功!");
         login();
     }
 
-    public static String toRegisterInfo(String registerNumber, String password) {
-        return "userNumber='" + registerNumber + '\'' +
-                ", password='" + password + '\'';
-
-    }
-    //从存储的文本里读取信息
-    public static Account fromLine(String line){
-        String[] arr = line.split(",");
-
-        String userNumberInfo = arr[0].split("=")[1];
-        String userNumber = userNumberInfo.substring(1,userNumberInfo.length()-1);
-
-        String passwordInfo = arr[1].split("=")[1];
-        String password = passwordInfo.substring(1,passwordInfo.length()-1);
-
-        Account account = new Account();
-        account.setUserNumber(userNumber);
-        account.setPassword(password);
-        return account;
-    }
 
     public static void login() {
         while (true) {
@@ -93,30 +52,18 @@ public class Start {
             String numberNow = scanner.next();
             System.out.println("请输入账户密码：");
             String passwordNow = scanner.next();
-
-            try (BufferedReader br = new BufferedReader(new FileReader(userInformationPath))) {
-                String line;
-                while ((line = br.readLine()) != null) {
-                   //userNumber='zhao.kai', password='123456'
-                    if("".equals(line)){
-                        continue;
-                    }
-                    account = fromLine(line);
-                    if(numberNow.equals(account.getUserNumber())){
-                        if(passwordNow.equals(account.getPassword())){
-                            System.out.println("登录成功");
-                            System.out.println("当前账户为：" + numberNow);
-                            operatePage();
-                            break;
-                        }else {
-                            System.out.println("登录失败，请重新输入账户密码");
-                            System.out.println("当前账户为：" + numberNow);
-                        }
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+            Account loginAccount = UserInformationStorage.getAccount(numberNow);
+            if (loginAccount == null) {
+                System.out.println("账户名或者密码不正确");
+                break;
             }
+            boolean loginSuccess = loginAccount.getPassword().equals(passwordNow);
+            if (loginSuccess) {
+                currentAccount = loginAccount;
+                System.out.println("登录成功");
+                operatePage();
+            }
+
         }
     }
 
@@ -127,13 +74,13 @@ public class Start {
             int command = scanner.nextInt();
             switch (command) {
                 case 0:
-                    signDailyIncomeAndExpense(account, dailyIncome, dailyExpense);
+                    signDailyIncomeAndExpense();
                     break;
                 case 1:
-                    addMonthIncomeAndExpense(account, dailyIncome, dailyExpense);
+                    addMonthIncomeAndExpense();
                     break;
                 case 2:
-                    Remark(account);
+                    remark();
                     break;
                 case 3:
                     homePage();
@@ -146,24 +93,13 @@ public class Start {
 
     }
 
-    public static void Remark(Account account) {
-        ArrayList<String> remarkList = new ArrayList<>();
-        System.out.println("当前账户是：" + account.getUserNumber());
-        String remark = scanner.next();
-        remarkList.add(remark);
-        try {
-            OutputStream outputStream = new FileOutputStream(userInformationPath, true);
-            outputStream.write(remarkList.toString().getBytes());
-            outputStream.flush();
-            outputStream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public static void remark() {
+
 
     }
 
-    public static void addMonthIncomeAndExpense(Account account, ArrayList<Double> dailyIncome, ArrayList<Double> dailyExpense) {
-        System.out.println("当前的用户为：" + account.getUserNumber());
+    public static void addMonthIncomeAndExpense() {
+        System.out.println("当前的用户为：" + currentAccount.getUserNumber());
         double monthSumIncome = 0;
         double monthSumExpense = 0;
         //月总收入
@@ -179,78 +115,44 @@ public class Start {
 
     }
 
-    public static void signDailyIncomeAndExpense(Account account, ArrayList<Double> dailyIncome, ArrayList<Double> dailyExpense) {
-        double sumIncome = 0;
-        double sumExpense = 0;
-        double totalMoney = 0;
-        HashMap<String, Double> hashMap1 = new MyHashMap<>();
-        HashMap<String, Double> hashMap2 = new MyHashMap<>();
+    public static void signDailyIncomeAndExpense() {
 
-        try {
-            OutputStream outputStream = new FileOutputStream(userDailyInformation, true);
-            OutputStream outputStream2 = new FileOutputStream(userDailyInformation, true);
-            while (true) {
-                System.out.println("当前的账户为：" + account.getUserNumber());
-                System.out.println("请输入你想进行的操作   i--每日收入;e--每日支出;b--返回");
-                String choice = scanner.next();
-                if (choice.equals("i")) {
-                    while (true) {
-                        System.out.println("请输入收入原因：(记录结束请输入“无”)");
-                        String incomeThings = scanner.next();
-                        if (incomeThings.equals("无")) {
-                            try {
-                                outputStream.write(hashMap1.toString().getBytes());
-                                outputStream.flush();
-                                outputStream.close();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            dailyIncome.add(sumIncome);//将每日总收入存入dailyIncome数组中
-                            break;
-                        }
-                        System.out.println("请输入收入金额：");
-                        double incomeMoney = scanner.nextDouble();
-                        sumIncome += incomeMoney;
-                        hashMap1.put(incomeThings, incomeMoney);
+        while (true) {
+            System.out.println("当前的账户为：" + currentAccount.getUserNumber());
+            System.out.println("请输入你想进行的操作   i--每日收入;e--每日支出;b--返回");
+            String choice = scanner.next();
+            if (choice.equals("i")) {
+                while (true) {
+                    System.out.println("请输入收入原因：(记录结束请输入“无”)");
+                    String incomeThings = scanner.next();
+                    if (incomeThings.equals("无")) {
+                        break;
                     }
-                } else if (choice.equals("e")) {
-                    while (true) {
-                        System.out.println("请输入支出原因：(记录结束请输入“无”)");
-                        String expenseThings = scanner.next();
-                        if (expenseThings.equals("无")) {
-                            try {
-                                outputStream2.write(hashMap2.toString().getBytes());
-                                outputStream2.flush();
-                                outputStream2.close();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            dailyExpense.add(sumExpense);//将每日总支出存入dailyExpense数组中
-                            break;
-                        }
-                        System.out.println("请输入支出金额：");
-                        double expenseMoney = scanner.nextDouble();
-                        sumExpense += expenseMoney;
-                        hashMap2.put(expenseThings, expenseMoney);
-                    }
-                } else if (choice.equals("b")) {
-                    return;
-
-                } else {
-                    System.out.println("输入指令有误，请重新输入!");
+                    System.out.println("请输入收入金额：");
+                    double incomeMoney = scanner.nextDouble();
+                    Transaction transaction = new Transaction(currentAccount.getUserNumber(), Transaction.INCOME, incomeMoney, incomeThings);
+                    UserTransactionStorage.addTransaction(transaction);
                 }
-                //每日收入存入account账户
-                account.setDayIncome(sumIncome);
-                System.out.println("当日收入：" + account.getDayIncome());
-                account.setDayExpense(sumExpense);
-                System.out.println("当日支出：" + account.getDayExpense());
-                totalMoney = sumIncome - sumExpense;
-                System.out.println("今日结余：" + totalMoney);
-                account.setDayTotalMoney(totalMoney);
+            } else if (choice.equals("e")) {
+                while (true) {
+                    System.out.println("请输入支出原因：(记录结束请输入“无”)");
+                    String expenseThings = scanner.next();
+                    if (expenseThings.equals("无")) {
+                        break;
+                    }
+                    System.out.println("请输入收入金额：");
+                    double expenseMoney = scanner.nextDouble();
+                    Transaction transaction = new Transaction(currentAccount.getUserNumber(), Transaction.INCOME, expenseMoney, expenseThings);
+                    UserTransactionStorage.addTransaction(transaction);
+                }
+            } else if (choice.equals("b")) {
+                return;
 
+            } else {
+                System.out.println("输入指令有误，请重新输入!");
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+
         }
+
     }
 }

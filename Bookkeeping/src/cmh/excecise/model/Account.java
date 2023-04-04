@@ -1,4 +1,4 @@
-package cmh.excecise;
+package cmh.excecise.model;
 
 public class Account {
     private String userNumber;
@@ -9,6 +9,7 @@ public class Account {
     private double monthExpense;
     private String remark;
     private double dayTotalMoney;
+
     public Account() {
     }
 
@@ -21,6 +22,11 @@ public class Account {
         this.monthExpense = monthExpense;
         this.remark = remark;
         this.dayTotalMoney = dayTotalMoney;
+    }
+
+    public Account(String userNumber, String password) {
+        this.userNumber = userNumber;
+        this.password = password;
     }
 
     public String getUserNumber() {
@@ -89,8 +95,22 @@ public class Account {
 
     @Override
     public String toString() {
-        return
-                "userNumber='" + userNumber + '\'' +
-                ", password='" + password + '\''+"\n" ;
+        return "userNumber='" + userNumber + '\'' + ", password='" + password + '\'' + "\n";
+    }
+
+    public static Account fromLine(String line) {
+        String[] arr = line.split(",");
+
+        String userNumberInfo = arr[0].split("=")[1];
+        String userNumber = userNumberInfo.substring(1, userNumberInfo.length() - 1);
+
+        String passwordInfo = arr[1].split("=")[1];
+        String password = passwordInfo.substring(1, passwordInfo.length() - 1);
+
+        Account account = new Account();
+        account.setUserNumber(userNumber);
+        account.setPassword(password);
+        return account;
     }
 }
+
