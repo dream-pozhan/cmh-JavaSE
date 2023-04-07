@@ -74,7 +74,9 @@ public class UserTransactionStorage {
 
     public static List<Transaction> getUserTransactions(String userNumber) {
         // TODO
+
         return null;
+
 
     }
 }

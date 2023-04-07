@@ -1,3 +1,5 @@
 
 userNumber='zhangsan', password='123456'
 userNumber='lisi', password='123456'
+userNumber='wangwu', password='123456'
+userNumber='joker', password='123456'
