@@ -31,7 +31,6 @@ public class OperatePage {
                     summarizeMonthIncomeAndExpense();
                     break;
                 case 2:
-                    remark();
                     break;
                 case 3:
                     new HomePage();
