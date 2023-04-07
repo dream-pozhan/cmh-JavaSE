@@ -1,3 +1,4 @@
-joker,INCOME,100.0,工资
 joker,INCOME,200.0,红包
-joker,INCOME,20.0,买菜
+joker,EXPENSE,20.0,买菜
+zhangsan,INCOME,500.0,红包
+zhangsan,EXPENSE,30.0,买菜

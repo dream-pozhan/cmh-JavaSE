@@ -4,12 +4,11 @@ import cmh.excecise.model.Account;
 import cmh.excecise.model.Transaction;
 import cmh.excecise.storage.UserTransactionStorage;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import static cmh.excecise.ui.HomePage.homePage;
 import static cmh.excecise.ui.LoginPage.login;
 public class Start {
-    private static ArrayList<Double> dailyIncome = new ArrayList<>();
-    private static ArrayList<Double> dailyExpense = new ArrayList<>();
     private static Scanner scanner = new Scanner(System.in);
     public static Account currentAccount;
 
@@ -24,18 +23,8 @@ public class Start {
 
     public static void addMonthIncomeAndExpense() {
         System.out.println("当前的用户为：" + currentAccount.getUserNumber());
-        double monthSumIncome = 0;
-        double monthSumExpense = 0;
-        //月总收入
-        for (int i = 0; i < dailyIncome.size(); i++) {
-            monthSumIncome += dailyIncome.get(i);
-        }
-        //月总支出
-        for (int i = 0; i < dailyExpense.size(); i++) {
-            monthSumExpense += dailyExpense.get(i);
-        }
-        System.out.println("月总收入" + monthSumIncome);
-        System.out.println("月总支出" + monthSumExpense);
+        UserTransactionStorage.getUserTransactions(currentAccount.getUserNumber());
+
 
     }
 

@@ -3,8 +3,7 @@ package cmh.excecise.model;
 public class Account {
     private String userNumber;
     private String password;
-    private double dayIncome;
-    private double dayExpense;
+
     private double monthIncome;
     private double monthExpense;
     private String remark;
@@ -13,11 +12,9 @@ public class Account {
     public Account() {
     }
 
-    public Account(String userNumber, String password, double dayIncome, double dayExpense, double monthIncome, double monthExpense, String remark, double dayTotalMoney) {
+    public Account(String userNumber, String password,double monthIncome, double monthExpense, String remark, double dayTotalMoney) {
         this.userNumber = userNumber;
         this.password = password;
-        this.dayIncome = dayIncome;
-        this.dayExpense = dayExpense;
         this.monthIncome = monthIncome;
         this.monthExpense = monthExpense;
         this.remark = remark;
@@ -43,22 +40,6 @@ public class Account {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public double getDayIncome() {
-        return dayIncome;
-    }
-
-    public void setDayIncome(double dayIncome) {
-        this.dayIncome = dayIncome;
-    }
-
-    public double getDayExpense() {
-        return dayExpense;
-    }
-
-    public void setDayExpense(double dayExpense) {
-        this.dayExpense = dayExpense;
     }
 
     public double getMonthIncome() {
