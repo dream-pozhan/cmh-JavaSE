@@ -1,6 +1,5 @@
 package cmh.excecise.storage;
 
-import cmh.excecise.Start;
 import cmh.excecise.exception.ApplicationError;
 import cmh.excecise.model.Transaction;
 
@@ -18,7 +17,9 @@ public class UserTransactionStorage {
     }
 
     private static List<String> readStorageFile() {
-
+        if(!new File(STORE_FILE).exists()){
+            return new ArrayList<>();
+        }
         try (BufferedReader br = new BufferedReader(new FileReader(STORE_FILE))) {
             String line;
             List<String> totalLines = new ArrayList<>();
@@ -74,25 +75,13 @@ public class UserTransactionStorage {
     }
 
     public static List<Transaction> getUserTransactions(String userNumber) {
-        // TODO
-        double income = 0.0;
-        double expense = 0.0;
+        ArrayList<Transaction> result = new ArrayList<>();
         for (Transaction transaction : transactionList) {
-            if (transaction.getType().equals("INCOME") == true&& transaction.getUserNumber().equals(userNumber) == true) {
-                income += transaction.getSubtotal();
-            }
-            if (transaction.getType().equals("EXPENSE") ==true && transaction.getUserNumber().equals(userNumber) == true) {
-                expense += transaction.getSubtotal();
+            if (transaction.getUserNumber().equals(userNumber)) {
+                result.add(transaction);
             }
         }
-        System.out.println(Start.currentAccount.getUserNumber());
-        Start.currentAccount.setMonthIncome(income);
-        Start.currentAccount.setMonthExpense(expense);
-        System.out.println(userNumber+"总收入为:"+Start.currentAccount.getMonthIncome());
-        System.out.println(userNumber+"总支出为:"+Start.currentAccount.getMonthExpense());
-        System.out.println(userNumber+"剩余金额为:"+(Start.currentAccount.getMonthIncome()-Start.currentAccount.getMonthExpense()));
-
-        return transactionList;
+        return result;
     }
 
 }

@@ -9,16 +9,12 @@ import static cmh.excecise.ui.OperatePage.operatePage;
 
 public class LoginPage {
     static Scanner scanner = new Scanner(System.in);
-    public static void register() {
-        System.out.println("请输入你的账户号码：");
-        String registerNumber = scanner.next();
-        System.out.println("请输入你的账户密码");
-        String registerPassword = scanner.next();
-        UserInformationStorage.addAccount(registerNumber, registerPassword);
-        System.out.println("注册成功!");
-        login();
+
+    public LoginPage() {
+        init();
     }
-    public static void login() {
+
+    public void init(){
         while (true) {
             System.out.println("请输入账户号码：");
             String numberNow = scanner.next();
@@ -38,5 +34,7 @@ public class LoginPage {
             }
 
         }
+
     }
+
 }

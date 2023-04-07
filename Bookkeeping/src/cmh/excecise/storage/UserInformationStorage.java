@@ -19,7 +19,9 @@ public class UserInformationStorage {
     }
 
     private static List<String> readStorageFile() {
-
+        if(!new File(STORE_FILE).exists()){
+            return new ArrayList<>();
+        }
         try (BufferedReader br = new BufferedReader(new FileReader(STORE_FILE))) {
             String line;
             List<String> totalLines = new ArrayList<>();

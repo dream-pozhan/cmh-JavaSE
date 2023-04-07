@@ -3,28 +3,46 @@ package cmh.excecise;
 import cmh.excecise.model.Account;
 import cmh.excecise.model.Transaction;
 import cmh.excecise.storage.UserTransactionStorage;
-import java.util.ArrayList;
+import cmh.excecise.ui.HomePage;
+import cmh.excecise.ui.LoginPage;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
-import static cmh.excecise.ui.HomePage.homePage;
-import static cmh.excecise.ui.LoginPage.login;
+
 public class Start {
-    private static Scanner scanner = new Scanner(System.in);
     public static Account currentAccount;
+    private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        homePage();
-        login();
+        new HomePage();
+        new LoginPage();
     }
+
     public static void remark() {
 
 
     }
 
-    public static void addMonthIncomeAndExpense() {
+    public static void summarizeMonthIncomeAndExpense() {
         System.out.println("当前的用户为：" + currentAccount.getUserNumber());
-        UserTransactionStorage.getUserTransactions(currentAccount.getUserNumber());
-
+        List<Transaction> userTransactions = UserTransactionStorage.getUserTransactions(currentAccount.getUserNumber());
+        double totalIncome = 0;
+        double totalExpense = 0;
+        SimpleDateFormat monthFormatter = new SimpleDateFormat("yyyyMM");
+        String currentMonth = monthFormatter.format(new Date());
+        for (Transaction transaction : userTransactions) {
+            boolean isCurrentMonth = monthFormatter.format(transaction.getCreatedAt()).equals(currentMonth);
+            if (isCurrentMonth && transaction.getType().equals(Transaction.INCOME)) {
+                totalIncome += transaction.getSubtotal();
+            }
+            if (isCurrentMonth && transaction.getType().equals(Transaction.EXPENSE)) {
+                totalIncome += transaction.getSubtotal();
+            }
+        }
+        System.out.println("当月收入：" + totalIncome);
+        System.out.println("当月支出：" + totalExpense);
 
     }
 
@@ -43,7 +61,7 @@ public class Start {
                     }
                     System.out.println("请输入收入金额：");
                     double incomeMoney = scanner.nextDouble();
-                    Transaction transaction = new Transaction(currentAccount.getUserNumber(), Transaction.INCOME, incomeMoney, incomeThings);
+                    Transaction transaction = new Transaction(currentAccount.getUserNumber(), Transaction.INCOME, incomeMoney, incomeThings, new Date());
                     UserTransactionStorage.addTransaction(transaction);
                 }
             } else if (choice.equals("e")) {
@@ -55,7 +73,7 @@ public class Start {
                     }
                     System.out.println("请输入支出金额：");
                     double expenseMoney = scanner.nextDouble();
-                    Transaction transaction = new Transaction(currentAccount.getUserNumber(), Transaction.EXPENSE, expenseMoney, expenseThings);
+                    Transaction transaction = new Transaction(currentAccount.getUserNumber(), Transaction.EXPENSE, expenseMoney, expenseThings, new Date());
                     UserTransactionStorage.addTransaction(transaction);
                 }
             } else if (choice.equals("b")) {

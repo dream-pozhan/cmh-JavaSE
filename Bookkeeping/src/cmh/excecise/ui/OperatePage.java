@@ -3,10 +3,10 @@ package cmh.excecise.ui;
 import java.util.Scanner;
 
 import static cmh.excecise.Start.*;
-import static cmh.excecise.ui.HomePage.homePage;
 
 public class OperatePage {
     static Scanner scanner = new Scanner(System.in);
+
     public static void operatePage() {
         System.out.println("++++操作页面+++++");
         while (true) {
@@ -17,13 +17,13 @@ public class OperatePage {
                     signDailyIncomeAndExpense();
                     break;
                 case 1:
-                    addMonthIncomeAndExpense();
+                    summarizeMonthIncomeAndExpense();
                     break;
                 case 2:
                     remark();
                     break;
                 case 3:
-                    homePage();
+                    new HomePage();
                     break;
                 default:
                     System.out.println("输入的指令有误，请重新输入！");
