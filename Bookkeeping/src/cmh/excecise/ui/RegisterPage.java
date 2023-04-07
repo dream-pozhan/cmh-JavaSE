@@ -1,12 +1,8 @@
 package cmh.excecise.ui;
 
-import cmh.excecise.Start;
-import cmh.excecise.model.Account;
 import cmh.excecise.storage.UserInformationStorage;
 
 import java.util.Scanner;
-
-import static cmh.excecise.ui.OperatePage.operatePage;
 
 public class RegisterPage {
     static Scanner scanner = new Scanner(System.in);
@@ -15,7 +11,7 @@ public class RegisterPage {
         init();
     }
 
-    public void init(){
+    public void init() {
         System.out.println("ÇëÊäÈëÄãµÄÕË»§ºÅÂë£º");
         String registerNumber = scanner.next();
         System.out.println("ÇëÊäÈëÄãµÄÕË»§ÃÜÂë");
