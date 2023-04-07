@@ -3,9 +3,8 @@ package cmh.excecise.ui;
 import cmh.excecise.Start;
 import cmh.excecise.model.Account;
 import cmh.excecise.storage.UserInformationStorage;
-import java.util.Scanner;
 
-import static cmh.excecise.ui.OperatePage.operatePage;
+import java.util.Scanner;
 
 public class LoginPage {
     static Scanner scanner = new Scanner(System.in);
@@ -14,7 +13,7 @@ public class LoginPage {
         init();
     }
 
-    public void init(){
+    public void init() {
         while (true) {
             System.out.println("请输入账户号码：");
             String numberNow = scanner.next();
@@ -30,7 +29,7 @@ public class LoginPage {
                 //调用Start类里currentAccount
                 Start.currentAccount = loginAccount;
                 System.out.println("登录成功");
-                operatePage();
+                new OperatePage();
             }
 
         }
